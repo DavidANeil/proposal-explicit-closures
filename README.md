@@ -25,7 +25,7 @@ Also those functions are considered insecure because they can arbitrarily access
 
 Check this out:
 ```javascript
-export function saferEval(evalString)[] {
+export function saferEval(evalString)[eval] {
     return eval(evalString);
 }
 ```
