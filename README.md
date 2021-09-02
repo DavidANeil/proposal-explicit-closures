@@ -107,5 +107,24 @@ export function factory(x)[] {
     return `(${x})`.length;
 }
 ```
-Sayomg "no closure means no closure" might be fine but the alternative of always including the "Primitives" (`Object`, `Number`, `Boolean`, `Array`, `String`, `null`, `undefined`, `Symbol`, `BigInt`) is still being investigated.
+Saying "no closure means no closure" might be fine but the alternative of always including the "Primitives" (`Object`, `Number`, `Boolean`, `Array`, `String`, `null`, `undefined`, `Symbol`, `BigInt`) is still being investigated.
 `Map` and `Set` and friends would not need to be included, as there is no native syntax to produce those.
+
+### Mutable values
+
+Will this output `0` or `1`?
+```javascript
+let x = 0;
+function f()[x: outerX] {
+    return outerX;
+}
+x++;
+console.log(f());
+```
+
+I _want_ the answer to be 1, but I imagine an engine implementer would hate me for wanting that.
+
+
+## Prior Art
+
+As far as I know, no other language lets you do this.
