@@ -143,6 +143,11 @@ console.log(f());
 
 I _want_ the answer to be 1, but I imagine an engine implementer would hate me for wanting that.
 
+## Alternatives
+### Why not just use Function.prototype.bind?
+
+1) This can be changed at the call-site.
+2) While this can be used for the inclusionary purposes of this proposal, it doesn't work to exclude things. That is, `.bind` would be insufficient without a way of declaring a function that does not close over any variables.
 
 ## Prior Art
 
