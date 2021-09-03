@@ -3,14 +3,14 @@
 Blah blah blah
 I want this syntax
 ```javascript
-export function myFunction(myParam)[console] {
+function myFunction(myParam)[console] {
     console.log(myParam);
 }
 ```
 
 Look what happens now:
 ```javascript
-export function myFunction(myParam)[] {
+function myFunction(myParam)[] {
     console.log(myParam); // ReferenceError: console is not defined
 }
 ```
@@ -25,7 +25,7 @@ Also those functions are considered insecure because they can arbitrarily access
 
 Check this out:
 ```javascript
-export function saferEval(evalString)[eval] {
+function saferEval(evalString)[eval] {
     return eval(evalString);
 }
 ```
@@ -35,7 +35,7 @@ It can't access anything outside of its scope, so it is a lot safer.  This inclu
 Also, we could do renaming
 
 ```javascript
-export function assertNotCircular(lists) {
+function assertNotCircular(lists) {
     lists.forEach(function(lists)[lists: outerLists, ...] {
         if (lists === outerLists) {
             throw new Error('Circular entry found');
@@ -54,16 +54,35 @@ ALTERNATE: Instead of object destructuring semantics, if we used object creation
 ### Arrow function syntax
 Placed after the arrow because otherwise it would be ambiguous.  I think.  I don't know, my brain isn't a parser.
 ```javascript
-export const myFunction = (myParam) => [console]{
+const myFunction = (myParam) => [console]{
     console.log(myParam);
 }
 ```
+
+### Class syntax
+```javascript
+class Foo extends Bar {
+    myMethod(myParam)[] {
+    }
+
+    constructor(myParam)[super] {
+        super(myParam);
+    }
+}
+```
+
+### `this`, `arguments`, etc.
+
+`this`, and `arguments` (and any other special identifiers I am forgetting) are considered call-site parameters, so can be accessed even if they are not included in the explicit closure list.
+
+An arrow function must list `[this]` if it wishes to include `this` from its parent in its closure.  Indeed this could be considered the default for arrow functions.
+Interestingly, a standard function could mimic this particular behavior of arrow functions by explicitly binding `[this]`.
 
 ### Pure functions
 
 A function that does not bind any closure is guaranteed to be pure.  Everyone loves this.
 
-### Functions that are intended to be executed elsewhere.
+### Functions that are intended to be executed elsewhere
 
 For example, using the Puppeteer library we have the following
 ```javascript
@@ -95,7 +114,7 @@ No closure means no closure.  No access to `JSON.parse`, no access to `Math.rand
 
 This will be unfortunate when trying to do something like
 ```javascript
-export function factory(x)[] {
+function factory(x)[] {
     return {a: x}
 }
 ```
@@ -103,7 +122,7 @@ Because creating that object would require access to the `Object` class and its 
 
 Similarly, would this work? Would the engine be able to implicitly convert the `string` to a boxed `String` object in order to access the `.length` property?
 ```javascript
-export function factory(x)[] {
+function factory(x)[] {
     return `(${x})`.length;
 }
 ```
